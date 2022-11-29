@@ -21,6 +21,7 @@ namespace BootsAndCats.Controllers
         }
 
         // GET: api/Users
+        [Route("users")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
