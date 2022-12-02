@@ -7,7 +7,7 @@ namespace BootsAndCats
     {
         public int Id { get; set; }
         public int? UserId { get; set; }
-        public string AlbumId { get; set; }
+        public string? AlbumId { get; set; }
         public int? Rating { get; set; }
         public string? ReviewContent { get; set; }
         public bool? Recommendation { get; set; }
