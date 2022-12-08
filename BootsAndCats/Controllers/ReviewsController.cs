@@ -83,8 +83,9 @@ namespace BootsAndCats.Controllers
 
         // POST: api/Reviews
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("add")]
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(ReviewPost review)
+        public async Task<ActionResult<Review>> PostReview(Review review)
         {
             //if (_context.Reviews == null)
             //{
@@ -97,19 +98,22 @@ namespace BootsAndCats.Controllers
 
                 var rev = new Review
                 {
-
+                    UserId = review.UserId,
+                    AlbumId = review.AlbumId,
                     Rating = review.Rating,
                     ReviewContent = review.ReviewContent,
                     Recommendation = review.Recommendation,
                     Tag = review.Tag,
-                    DateSubmitted = review.DateSubmitted,
-
+                    DateSubmitted = DateTime.Now,
                 };
 
-                _context.Reviews.Add(rev);
-                if (await _context.SaveChangesAsync() == 1) return Ok();
+            var result = _context.Users.Include("Reviews")
+                                    .FirstOrDefault(u => u.Id == rev.UserId);
+            result.Reviews.Add(rev);
+            //_context.Reviews.Add(rev);
+            if (await _context.SaveChangesAsync() == 1) return Ok();
 
-                return StatusCode(500);
+            return StatusCode(500);
             
         }
 
