@@ -51,31 +51,15 @@ namespace BootsAndCats.Controllers
         }
 
         // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        [HttpPut]
+        [Route ("changeuser")]
+        public async Task<IActionResult> PutUser(User user)
         {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            User tUser = _context.Users.Where(x => x.Id == user.Id).FirstOrDefault();
+            tUser.UserName = user.UserName;
+            tUser.Password = user.Password;
+            _context.Users.Update(tUser);
+            _context.SaveChanges();
 
             return NoContent();
         }
